@@ -1,0 +1,33 @@
+/****** Import css with font icons for rating elements *****/
+
+@import url(http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css);
+
+body {
+    display: table;
+}
+
+/****** Style Star Rating Plugin *****/
+
+.rating { 
+    float: left;
+}
+
+.rating  input {
+    /*display: none;*/
+}
+
+.rating label { 
+  float: right; 
+  margin-left: 5px;
+}
+
+/***** CSS to Highlight Stars on Hover *****/
+
+.rating input:checked ~ label, /* show gold star when clicked */
+.rating:not(:checked) label:hover, /* hover current star */
+.rating:not(:checked) label:hover ~ label { color: #FFD700;  } /* hover previous stars in list */
+
+.rating input:checked + label:hover, /* hover current star when changing rating */
+.rating input:checked ~ label:hover,
+.rating label:hover ~ input:checked ~ label, /* lighten current selection */
+.rating input:checked ~ label:hover ~ label { color: #FFED85;  } 

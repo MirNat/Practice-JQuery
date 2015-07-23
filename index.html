@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Star Rating Plugin</title>
+    <link rel="stylesheet" href="star-rating-plugin.css">
+    <script src="jquery-1.11.3.min.js"></script>
+	<script src="star-rating-plugin.js"></script>
+</head>
+<body>
+	Rate with stars (default)
+	<div class="rating" id="1"></div>
+	<br/>
+	Rate with hearts
+	<div class="rating" id="2"></div>
+	<br/><br/>
+	Rate with homes
+	<div class="rating" id="3"></div>
+	<script>
+		$(function() {
+			$('#1').rating();
+			$('#2').rating({ 
+				number: 10, 
+				score: 3,
+				icon: 'heart',
+				size: '35px',
+				click: function (){
+					//alert('I`m here in hearts');
+				},
+				normalColor: '#b5feff' 
+			});
+			$('#3').rating({ 
+				number: 7, 
+				score: 2,
+				icon: 'home',
+				size: '50px',
+				mouseover: function (){
+					//alert('I`m here');
+				},
+				normalColor: '#b5e5c4' 
+			});
+			
+		});
+	</script>	
+</body>
+</html>
