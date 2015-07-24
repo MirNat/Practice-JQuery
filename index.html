@@ -10,12 +10,20 @@
 <body>
 	Rate with stars (default)
 	<div class="rating" id="r1"></div>
-	<br/>
+	<br/><br/>
 	Rate with hearts
 	<div class="rating" id="r2"></div>
 	<br/><br/>
 	Rate with homes (readonly)
 	<div class="rating" id="r3"></div>
+	<br/><br/>
+	<div class="rating" id="r4"></div>
+	<br/><br/>
+	<div class="rating" id="r5"></div>
+	<br/><br/>
+	<div class="rating" id="r6"></div>
+	<br>
+	<input type="text" value="home status" id="home-status"/>
 	<script>
 		$(function() {
 			$('#r1').rating();
@@ -24,10 +32,7 @@
 				score: 3,
 				icon: 'heart',
 				size: '35px',
-				click: function (){
-					//alert('I`m here in hearts');
-				},
-				normalColor: '#dbc5cc',
+				normalColor: '#E8DCDF',
 				ratedColor: '#ff0020' 
 			});
 			$('#r3').rating({ 
@@ -35,14 +40,43 @@
 				score: 5,
 				icon: 'home',
 				size: '50px',
-				mouseover: function (){
-					//alert('I`m here');
-				},
 				normalColor: '#c3d0db',
-				ratedColor: '#072dab',
-				readonly: true  
+				ratedColor: '#12C7A9',
+				readonly: true
+			});		
+			$('#r4').rating({ 
+				number: 8, 
+				score: 3,
+				icon: 'plane',
+				size: '35px',
+				normalColor: '#E1F3F5',
+				ratedColor: '#527AD1'   
 			});
-			
+			$('#r5').rating({ 
+				number: 8, 
+				score: 4,
+				icon: 'car',
+				size: '35px',
+				normalColor: '#E1F3F5',
+				ratedColor: '#9B5DD9' 
+			});
+			$('#r6').rating({ 
+				number: 8, 
+				score: 5,
+				icon: 'user',
+				size: '35px',
+				normalColor: '#E1F3F5',
+				ratedColor: '#1685B5',
+				mouseover: function (){
+					document.getElementById('home-status').value = 'mouseover';
+				},
+				mouseout: function (){
+					document.getElementById('home-status').value = 'mouseout';
+				},
+				click: function (){
+					document.getElementById('home-status').value = 'clicked';
+				}, 
+			});
 		});
 	</script>	
 </body>

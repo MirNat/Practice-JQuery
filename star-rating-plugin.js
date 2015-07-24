@@ -1,33 +1,35 @@
-(function($) {
-  'use strict';
+(function ($) {
+    'use strict';
     var methods = {
-        init: function(params) {
-            return this.each(function() {
+        init: function (params) {
+                var MinNumberOfRatingElements = 1;
+                var MinScore = 0;
                 this.self = $(this);
-                this.options = $.extend(true, {}, $.fn.rating.defaults, params);
-                this.options.number = Math.max(this.options.number, 1);
-                this.options.score = Math.max(this.options.score, 0);
+                this.options = $.extend({}, $.fn.rating.defaults, params);//merge user params with default options            
+                this.options.number = Math.max(this.options.number, MinNumberOfRatingElements);//check validity of number param
+                this.options.score = Math.max(this.options.score, MinScore);//check validity of score param
+                var parentId = this.self.attr('id');
 
                 createRatingElementsWithOptions(this.self, this.options);
 
                 if (typeof this.options.mouseover === 'function') {
-                    this.self.on('mouseover.rating', this.options.mouseover);
+                    $('#' + parentId + ' label').on('mouseover', this.options.mouseover);
                 }
 
                 if (typeof this.options.mouseout === 'function') {
-                    this.self.on('mouseout.rating', this.options.mouseout);
+                    $('#' + parentId + ' label').on('mouseout', this.options.mouseout);
                 }
 
                 if (typeof this.options.click === 'function') {
-                    this.self.on('click.rating', this.options.click);
-                }
-            });
+                    $('#' + parentId + ' label').on('click', this.options.click);
+                };
+
+            return this;
         }      
     };
 
-
-    var lightHexColor = function lighten (color, percent) {
-        var factor = percent/100;
+    var lightHexColor = function (color, percent) {
+        var factor = percent / 100;
         var r = parseInt(color.substring(1, 3), 16);
         var g = parseInt(color.substring(3, 5), 16);
         var b = parseInt(color.substring(5, 7), 16);
@@ -60,17 +62,18 @@
         };
         parentElement.append(ratingElements);
         $("#" + parentId).css('color', options.normalColor);
-        var lightedInputSelector = "#" + parentId + "rating-element";
-        var scoreElement = lightedInputSelector + options.score;
+        var inputSelector = "#" + parentId + "rating-element";
+        var scoreElement = inputSelector + options.score;
         $(scoreElement).prop("checked", true);
 
         if (options.readonly) {
             for (var i = 1; i <= options.score; i++){
-                $(lightedInputSelector + i).next().css('color', options.ratedColor);
+                $(inputSelector + i).next().css('color', options.ratedColor);
             }
         } else {
+            var LightenPercent = 40;
             var setHighlightRatingOnHover = '<style>#' + parentId + ' input:checked ~ label, #' + parentId + ':not(:checked) label:hover, #' + parentId + ':not(:checked) label:hover ~ label { color: ' + options.ratedColor+';  }' +
-                '#' + parentId + ' #' + parentId + ' input:checked + label:hover, #' + parentId + ' input:checked ~ label:hover, #' + parentId + ' label:hover ~ input:checked ~ label, #' + parentId + ' input:checked ~ label:hover ~ label { color: ' + lightHexColor(options.ratedColor, 40) + ';}</style>' ;
+                '#' + parentId + ' #' + parentId + ' input:checked + label:hover, #' + parentId + ' input:checked ~ label:hover, #' + parentId + ' label:hover ~ input:checked ~ label, #' + parentId + ' input:checked ~ label:hover ~ label { color: ' + lightHexColor(options.ratedColor, LightenPercent) + ';}</style>' ;
             $('head').append(setHighlightRatingOnHover);
         }
     };
