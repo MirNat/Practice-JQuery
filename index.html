@@ -9,17 +9,17 @@
 </head>
 <body>
 	Rate with stars (default)
-	<div class="rating" id="1"></div>
+	<div class="rating" id="r1"></div>
 	<br/>
 	Rate with hearts
-	<div class="rating" id="2"></div>
+	<div class="rating" id="r2"></div>
 	<br/><br/>
-	Rate with homes
-	<div class="rating" id="3"></div>
+	Rate with homes (readonly)
+	<div class="rating" id="r3"></div>
 	<script>
 		$(function() {
-			$('#1').rating();
-			$('#2').rating({ 
+			$('#r1').rating();
+			$('#r2').rating({ 
 				number: 10, 
 				score: 3,
 				icon: 'heart',
@@ -27,17 +27,20 @@
 				click: function (){
 					//alert('I`m here in hearts');
 				},
-				normalColor: '#b5feff' 
+				normalColor: '#dbc5cc',
+				ratedColor: '#ff0020' 
 			});
-			$('#3').rating({ 
+			$('#r3').rating({ 
 				number: 7, 
-				score: 2,
+				score: 5,
 				icon: 'home',
 				size: '50px',
 				mouseover: function (){
 					//alert('I`m here');
 				},
-				normalColor: '#b5e5c4' 
+				normalColor: '#c3d0db',
+				ratedColor: '#072dab',
+				readonly: true  
 			});
 			
 		});
