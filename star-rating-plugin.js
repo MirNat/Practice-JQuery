@@ -72,8 +72,13 @@
             }
         } else {
             var LightenPercent = 40;
-            var setHighlightRatingOnHover = '<style>#' + parentId + ' input:checked ~ label, #' + parentId + ':not(:checked) label:hover, #' + parentId + ':not(:checked) label:hover ~ label { color: ' + options.ratedColor+';  }' +
-                '#' + parentId + ' #' + parentId + ' input:checked + label:hover, #' + parentId + ' input:checked ~ label:hover, #' + parentId + ' label:hover ~ input:checked ~ label, #' + parentId + ' input:checked ~ label:hover ~ label { color: ' + lightHexColor(options.ratedColor, LightenPercent) + ';}</style>' ;
+            var setHighlightRatingOnHover = '<style>#' + parentId + ' input:checked ~ label, #' + // show rating element of rated color when clicked 
+            parentId + ':not(:checked) label:hover, #' + parentId + // hover current rating element with rated color
+            ':not(:checked) label:hover ~ label { color: ' + options.ratedColor+';  }' + // hover previous rating elements in list with rated color
+            '#' + parentId + ' #' + parentId + ' input:checked + label:hover, #' + //hover current rating element with lighten color when changing rating
+            parentId + ' input:checked ~ label:hover, #' + //hover current rating element with lighten rated color when changing rating
+            parentId + ' label:hover ~ input:checked ~ label, #' + //lighten of current selection with lighten rated color
+            parentId + ' input:checked ~ label:hover ~ label { color: ' + lightHexColor(options.ratedColor, LightenPercent) + ';}</style>' ;//lighten of current selection with lighten rated color
             $('head').append(setHighlightRatingOnHover);
         }
     };
