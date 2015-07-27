@@ -5,30 +5,74 @@
                 var MinNumberOfRatingElements = 1;
                 var MinScore = 0;
                 this.self = $(this);
-                this.options = $.extend({}, $.fn.rating.defaults, params);//merge user params with default options            
-                this.options.number = Math.max(this.options.number, MinNumberOfRatingElements);//check validity of number param
-                this.options.score = Math.max(this.options.score, MinScore);//check validity of score param
+                this.options = $.extend({}, $.fn.rating.defaults, params);//merge user params with default options 
+
+                if (this.options.number < MinNumberOfRatingElements) {
+                    this.options.number = MinNumberOfRatingElements;
+                    handleException('Incorrect "number" parameter, must be >= 1.');
+                }
+
+                if (this.options.score < MinScore) {
+                    this.options.number = MinScore;
+                    handleException('Incorrect "score" parameter, must be >= 0.');
+                }
+
+                if (typeof this.options.readonly !== 'boolean') {
+                    this.options.readonly = $.fn.rating.defaults.readonly;
+                    handleException('Incorrect "readonly" parameter, must be boolean.');
+                }
+
+                if (typeof this.options.icon !== 'string') {
+                    this.options.icon = $.fn.rating.defaults.icon;
+                    handleException('Incorrect "icon" parameter, must be string. Besides it`s name must be one of icons name on http://fortawesome.github.io/Font-Awesome/icons/');
+                }
+
+                if (!isHexadecimalNumber(this.options.normalColor)) {
+                    this.options.normalColor = $.fn.rating.defaults.normalColor;
+                    handleException('Incorrect "normalColor" parameter, must be hexadecimal number started with "#".');
+                }
+
+                if (!isHexadecimalNumber(this.options.ratedColor)) {
+                    this.options.ratedColor = $.fn.rating.defaults.ratedColor;
+                    handleException('Incorrect "ratedColor" parameter, must be hexadecimal number started with "#".');
+                }
+
+                if (parseInt(this.options.size, 10) != 'number') {
+                    this.options.size = $.fn.rating.defaults.size;
+                    handleException('Incorrect "size" parameter, must be a number ended with css unit of measure (px,pt,em).');
+                }
+
                 var parentId = this.self.attr('id');
 
                 createRatingElementsWithOptions(this.self, this.options);
 
                 if (typeof this.options.mouseover === 'function') {
                     $('#' + parentId + ' label').on('mouseover', this.options.mouseover);
+                } else {
+                    handleException('Incorrect "mouseover" parameter, must be function.');
                 }
 
                 if (typeof this.options.mouseout === 'function') {
                     $('#' + parentId + ' label').on('mouseout', this.options.mouseout);
+                } else {
+                    handleException('Incorrect "mouseout" parameter, must be function.');
                 }
 
                 if (typeof this.options.click === 'function') {
                     $('#' + parentId + ' label').on('click', this.options.click);
-                };
+                } else {
+                    handleException('Incorrect "click" parameter, must be function.');
+                }
 
             return this;
         }      
     };
 
-    var lightHexColor = function (color, percent) {
+    var isHexadecimalNumber = function (number) {
+        return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(number);
+    }
+
+    var lightHexadecimalColor = function (color, percent) {
         var factor = percent / 100;
         var r = parseInt(color.substring(1, 3), 16);
         var g = parseInt(color.substring(3, 5), 16);
@@ -78,10 +122,18 @@
             '#' + parentId + ' #' + parentId + ' input:checked + label:hover, #' + //hover current rating element with lighten color when changing rating
             parentId + ' input:checked ~ label:hover, #' + //hover current rating element with lighten rated color when changing rating
             parentId + ' label:hover ~ input:checked ~ label, #' + //lighten of current selection with lighten rated color
-            parentId + ' input:checked ~ label:hover ~ label { color: ' + lightHexColor(options.ratedColor, LightenPercent) + ';}</style>' ;//lighten of current selection with lighten rated color
+            parentId + ' input:checked ~ label:hover ~ label { color: ' + lightHexadecimalColor(options.ratedColor, LightenPercent) + ';}</style>' ;//lighten of current selection with lighten rated color
             $('head').append(setHighlightRatingOnHover);
         }
     };
+
+    var handleException = function (exceptionString) {
+        if (window.console && window.console.log) {
+            window.console.log( exceptionString);
+        } else {
+            throw new UnavailableOutputMethodError('Window console unavailable.');
+        }
+    }
 
     $.fn.rating = function (method) {
         if (methods[method]) {
